@@ -4,14 +4,34 @@
       Liste des plantes
     </ion-title>
   </ion-toolbar>
+  <ion-item>
+    <ion-searchbar animated placeholder="Recherche"  (ionChange)="recherchePlante($event)"></ion-searchbar>
+  </ion-item>
 </ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-fab id='ajouter' routerLink="/ajouter-plante" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-item routerLink="/afficher-plante" *ngFor="let plante of plantes" (click)="versVuePlante(produit)">
+    <ion-thumbnail slot="start">
+      <!--<img [src]="produit.imageURL" alt="" />-->
+      <img [src]="plante.imageURL"
+        onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/e/e6/Pas_d%27image_disponible.svg';">
+      <!-- (ionError)="imageDefaut($event)" -->
+    </ion-thumbnail>
+  <ion-item-sliding>
+    <ion-item>
+    <ion-item class="nom">{{produit.nom}}</ion-item>
+    <!-- <ion-item class="nom">{{produit.quantite}}</ion-item> -->
+    <!-- <ion-item class="nom">{{produit.quantiteCommandee}}</ion-item> -->
+    </ion-item>
+  </ion-item-sliding>
+  </ion-item>
 </ion-content>
+
+
