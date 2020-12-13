@@ -1,5 +1,7 @@
 {
   "name": "BePlantes",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
