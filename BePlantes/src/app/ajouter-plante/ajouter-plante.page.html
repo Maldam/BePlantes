@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons id='retourProduits' slot="start">
+    <ion-buttons id='retourPlantes' slot="start">
       <ion-back-button defaultHref="/tabs/plantes"></ion-back-button>
     </ion-buttons>
     <ion-title>Nouvelle plante</ion-title>
@@ -18,73 +18,107 @@
     </div>
   </div>
   <ion-button (click)="ajouterPhoto('galerie')" color="tertiary" expand="block">
-    <!-- <ion-icon name="image" slot="start"></ion-icon> -->
-    <ion-icon src="./assets/svg/image.svg"></ion-icon>
+    <ion-icon name="image" slot="start"></ion-icon>
+    <!-- <ion-icon src="./assets/svg/image.svg"></ion-icon> -->
     Charger l'image
   </ion-button>
   <ion-button (click)="ajouterPhoto('camera')" color="secondary" expand="block">
-    <!-- <ion-icon name="camera" slot="start"></ion-icon> -->
-    <ion-icon src="./assets/svg/camera.svg"></ion-icon>
+     <ion-icon name="camera" slot="start"></ion-icon> 
     Prenez une photo
   </ion-button>
 
   <ion-item>
-    <ion-label position="floating">Code produit</ion-label>
-    <ion-input [(ngModel)]="produit.codeProduit" type="string"></ion-input>
+    <ion-label position="floating">Nom de la plante</ion-label>
+    <ion-input [(ngModel)]="plante.nom" type="string"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Code produit fournisseur</ion-label>
-    <ion-input [(ngModel)]="produit.codeProduitFournisseur" type="string"></ion-input>
+    <ion-label position="floating">Couleur de la plante</ion-label>
+    <ion-input [(ngModel)]="plante.couleur" type="string"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Nom</ion-label>
-    <ion-input [(ngModel)]="produit.nom" type="string"></ion-input>
+    <ion-label position="floating">Température minimale</ion-label>
+    <ion-input [(ngModel)]="plante.temperatureMinimum" type="number"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Quantité</ion-label>
-    <ion-input [(ngModel)]='produit.quantite' type="number"></ion-input>
+    <ion-label position="floating">Température maximale</ion-label>
+    <ion-input [(ngModel)]='plante.temperatureMaximum' type="number"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Prix de vente en €</ion-label>
-    <ion-input [(ngModel)]='produit.prixVente' type="number"></ion-input>
+    <ion-label position="floating">Type de terrain</ion-label>
+    <ion-input [(ngModel)]='plante.terrain' type="string"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Prix d'achat en €</ion-label>
-    <ion-input [(ngModel)]='produit.prixAchat' type="number"></ion-input>
+    <ion-label position="floating">Bouturage</ion-label>
+    <ion-input [(ngModel)]='plante.bouturage' type="string"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">TVA</ion-label>
-    <ion-input [(ngModel)]='produit.TVA' type="number"></ion-input>
+    <ion-label position="floating">Semis</ion-label>
+    <ion-input [(ngModel)]='plante.semis' type="string"></ion-input>
   </ion-item>
-  <ion-radio-group value='Alimentaire'>
+  <ion-item>
+    <ion-label position="floating">Floraison</ion-label>
+    <ion-input [(ngModel)]='plante.floraison' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Exposition</ion-label>
+    <ion-input [(ngModel)]='plante.exposition' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Vivace</ion-label>
+    <ion-input [(ngModel)]='plante.vivace' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-input [(ngModel)]='plante.description' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Taille</ion-label>
+    <ion-input [(ngModel)]='plante.taille' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Mellifere</ion-label>
+    <ion-input [(ngModel)]='plante.mellifere' type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Notes</ion-label>
+    <ion-input [(ngModel)]='plante.notes' type="string"></ion-input>
+  </ion-item>
+
+
+
+
+
+  <!-- <ion-radio-group value='Alimentaire'>
     <ion-list-header>
-      <ion-label>Type de produit</ion-label>
+      <ion-label>Type de plante</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-item>
         <ion-label>Alimentaire</ion-label>
-        <ion-radio slot="end" color="primary" value="Alimentaire" (ionSelect)="typeProduit('Alimentaires')"></ion-radio>
+        <ion-radio slot="end" color="primary" value="Alimentaire" (ionSelect)="typePlante('Alimentaires')"></ion-radio>
       </ion-item>
       <ion-item>
         <ion-label>Non alimentaire</ion-label>
-        <ion-radio slot="end" color="secondary" value="NonAlimentaire" (ionSelect)="typeProduit('NonAlimentaires')"></ion-radio>
+        <ion-radio slot="end" color="secondary" value="NonAlimentaire" (ionSelect)="typePlante('NonAlimentaires')"></ion-radio>
       </ion-item>
     </ion-item>
   </ion-radio-group>
-  <ion-item *ngIf="typeProduitStatus">
+  <ion-item *ngIf="typePlanteStatus">
     <ion-label position="floating">Catégorie</ion-label>
-    <ion-select [(ngModel)]='produit.categorie' interface="popover" (ionChange)="ajouterNouvelleCategorie(produit.categorie)" >
-      <ion-select-option *ngFor="let categorieProduit of categoriesProduits">{{categorieProduit}}</ion-select-option>
+    <ion-select [(ngModel)]='plante.categorie' interface="popover" (ionChange)="ajouterNouvelleCategorie(plante.categorie)" >
+      <ion-select-option *ngFor="let categoriePlante of categoriesPlantes">{{categoriePlante}}</ion-select-option>
       <ion-select-option>Nouvelle catégorie</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-item *ngIf="categorieProduitStatus">
+  <ion-item *ngIf="categoriePlanteStatus">
     <ion-label  position="floating">Nom de la nouvelle catégorie</ion-label>
     <ion-input [(ngModel)]="nouvelleCategorie" type="string"></ion-input>
-  </ion-item>
-  <ion-button (click)="ajoutProduit(produit)" expand="block" color="primary">
-    <!-- <ion-icon name="checkmark"></ion-icon> -->
-    <ion-icon src="./assets/svg/checkmark.svg"></ion-icon>
+  </ion-item> -->
+
+
+  <ion-button (click)="ajoutPlante(plante)" expand="block" color="primary">
+    <ion-icon name="checkmark"></ion-icon>
+    <!-- <ion-icon src="./assets/svg/checkmark.svg"></ion-icon> -->
     Ajouter</ion-button>
 
 
