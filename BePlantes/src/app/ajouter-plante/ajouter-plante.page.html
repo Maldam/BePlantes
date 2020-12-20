@@ -14,7 +14,7 @@
   <div class="flex">
     <div class="img-box">
       <img [src]="image"
-        onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/e/e6/Pas_d%27image_disponible.svg';">
+        onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Belgium_brussels_iris.svg/1054px-Belgium_brussels_iris.svg.png';">
     </div>
   </div>
   <ion-button (click)="ajouterPhoto('galerie')" color="tertiary" expand="block">
@@ -28,8 +28,16 @@
   </ion-button>
 
   <ion-item>
-    <ion-label position="floating">Nom de la plante</ion-label>
-    <ion-input [(ngModel)]="plante.nom" type="string"></ion-input>
+    <ion-label position="floating">Genre de la plante</ion-label>
+    <ion-input [(ngModel)]="plante.genre" type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Variété de la plante</ion-label>
+    <ion-input [(ngModel)]="plante.variete" type="string"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Surnom de la plante</ion-label>
+    <ion-input [(ngModel)]="plante.surnom" type="string"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Couleur de la plante</ion-label>
