@@ -17,16 +17,16 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-item routerLink="/afficher-plante" *ngFor="let plante of plantes" (click)="versVuePlante(produit)">
+  <ion-item routerLink="/afficher-plante" *ngFor="let genre of listeGenres" (click)="versVuePlante(produit)">
     <ion-thumbnail slot="start">
       <!--<img [src]="produit.imageURL" alt="" />-->
-      <img [src]="plante.imageURL"
-        onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/e/e6/Pas_d%27image_disponible.svg';">
+      <img [src]="genre.imageURL"
+        onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Belgium_brussels_iris.svg/1054px-Belgium_brussels_iris.svg.png';">
       <!-- (ionError)="imageDefaut($event)" -->
     </ion-thumbnail>
   <ion-item-sliding>
     <ion-item>
-    <ion-item class="nom">{{produit.nom}}</ion-item>
+    <ion-item class="nom">{{genre}}</ion-item>
     <!-- <ion-item class="nom">{{produit.quantite}}</ion-item> -->
     <!-- <ion-item class="nom">{{produit.quantiteCommandee}}</ion-item> -->
     </ion-item>
