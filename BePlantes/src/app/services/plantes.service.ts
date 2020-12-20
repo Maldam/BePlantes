@@ -11,7 +11,7 @@ export class PlantesService {
   private plante: PlanteModele = new PlanteModele();
   private imageVide: string = this.plante.imageURL;
   //public plantes: Array<PlanteModele> = new Array<PlanteModele>();
-  //public plantes2: Array<PlanteModele>;
+  private plantes2: Array<PlanteModele>;
   private image: string;
   constructor(
     private angularFireDatabase: AngularFireDatabase,
@@ -26,7 +26,7 @@ export class PlantesService {
   }
   public createPlante(plante: PlanteModele) {
     return new Promise<any>((resolve, reject) => {
-      this.angularFireDatabase.list('Plantes/').push(plante)
+      this.angularFireDatabase.list('Plantes/'+plante.genre).push(plante)
         .then(
           res => resolve(res),
           err => reject(err)
@@ -42,6 +42,20 @@ export class PlantesService {
         )
     })
   }
+  public getGenres(){
+    return new Observable(observer => {
+      this.angularFireDatabase.list('Plantes/').snapshotChanges(['child_added', 'child_removed', 'child_changed', 'child_moved']).subscribe(genresRecus => { 
+        let genres: any[] = [] ;
+        genresRecus.forEach(genreRecus => {
+          let genre: any;
+          genre = genreRecus.key,
+          genres.push(genre);
+          observer.next(genres);
+        })
+      });
+    });
+
+  }
   public getPlantes(): Observable<Array<PlanteModele>> {
     return new Observable<Array<PlanteModele>>(observer => {
       this.angularFireDatabase.list('Plantes/').snapshotChanges(['child_added', 'child_removed', 'child_changed', 'child_moved']).subscribe(plantesRecus => {
@@ -49,8 +63,10 @@ export class PlantesService {
         plantesRecus.forEach(planteRecus => {
           let plante: PlanteModele = new PlanteModele();
           plante.key = planteRecus.key,
-          plante.bouturage = planteRecus.payload.exportVal().bouturage,
-            plante.nom = planteRecus.payload.exportVal().nom,
+            plante.bouturage = planteRecus.payload.exportVal().bouturage,
+            plante.genre = planteRecus.payload.exportVal().genre,
+            plante.variete = planteRecus.payload.exportVal().variete,
+            plante.surnom = planteRecus.payload.exportVal().surnom,
             plante.couleur = planteRecus.payload.exportVal().couleur,
             plante.description = planteRecus.payload.exportVal().description,
             plante.exposition = planteRecus.payload.exportVal().exposition,
@@ -64,7 +80,7 @@ export class PlantesService {
             plante.temperatureMinimum = planteRecus.payload.exportVal().temperatureMinimum,
             plante.terrain = planteRecus.payload.exportVal().terrain,
             plante.vivace = planteRecus.payload.exportVal().vivace,
-          plantes.push(plante);
+            plantes.push(plante);
           observer.next(plantes);
         })
       });
@@ -72,12 +88,14 @@ export class PlantesService {
   }
   public updatePlante(plante: PlanteModele): Promise<void> {
     return new Promise<any>((resolve, reject) => {
-      this.angularFireDatabase.list('Plantes/').update(plante.key, { 
+      this.angularFireDatabase.list('Plantes/').update(plante.key, {
         bouturage: plante.bouturage,
-        nom: plante.nom, 
-        couleur: plante.couleur, 
+        genre: plante.genre,
+        variete: plante.variete,
+        surnom: plante.surnom,
+        couleur: plante.couleur,
         description: plante.description,
-        exposition: plante.exposition, 
+        exposition: plante.exposition,
         floraison: plante.floraison,
         imageURL: plante.imageURL,
         mellifere: plante.mellifere,
@@ -106,63 +124,65 @@ export class PlantesService {
       }
     }).catch(error => console.log(error));
   }
-//   public numeroIndex(nomPlante: any) {
-//     try {
-//       return this.plantes2.findIndex(x => x.nom === nomPlante)
-//     } catch (error) {
-//       return -1
-//     }
-//   }
+
+  public numeroIndex(nomPlante: any) {
+    try {
+      return this.plantes2.findIndex(x => x.surnom === nomPlante)
+    } catch (error) {
+      return -1
+    }
+  }
+
   public deleteImage(plante: PlanteModele): void {
     this.angularFireStorage.storage.refFromURL(plante.imageURL).delete();
     //this.angularFireStorage.ref("Plantes/test.jpg").delete();
   }
 
-//   public async openLibrary() {
-//     const options: CameraOptions = {
-//       quality: 100,
-//       destinationType: this.camera.DestinationType.DATA_URL,
-//       encodingType: this.camera.EncodingType.JPEG,
-//       mediaType: this.camera.MediaType.PICTURE,
-//       targetWidth: 1000,
-//       targetHeight: 1000,
-//       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-//     };
-//     return await this.camera.getPicture(options);
-//   }
-//   public async openCamera() {
-//     const options: CameraOptions = {
-//       quality: 100,
-//       destinationType: this.camera.DestinationType.DATA_URL,
-//       encodingType: this.camera.EncodingType.JPEG,
-//       mediaType: this.camera.MediaType.PICTURE,
-//       targetWidth: 1000,
-//       targetHeight: 1000,
-//       sourceType: this.camera.PictureSourceType.CAMERA
-//     };
-//     return await this.camera.getPicture(options);
-//   }
+  //   public async openLibrary() {
+  //     const options: CameraOptions = {
+  //       quality: 100,
+  //       destinationType: this.camera.DestinationType.DATA_URL,
+  //       encodingType: this.camera.EncodingType.JPEG,
+  //       mediaType: this.camera.MediaType.PICTURE,
+  //       targetWidth: 1000,
+  //       targetHeight: 1000,
+  //       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+  //     };
+  //     return await this.camera.getPicture(options);
+  //   }
+  //   public async openCamera() {
+  //     const options: CameraOptions = {
+  //       quality: 100,
+  //       destinationType: this.camera.DestinationType.DATA_URL,
+  //       encodingType: this.camera.EncodingType.JPEG,
+  //       mediaType: this.camera.MediaType.PICTURE,
+  //       targetWidth: 1000,
+  //       targetHeight: 1000,
+  //       sourceType: this.camera.PictureSourceType.CAMERA
+  //     };
+  //     return await this.camera.getPicture(options);
+  //   }
 
-//   public createCategoriePlante(CategoriePlante: PlanteModele) {
-//     return new Promise<any>((resolve, reject) => {
-//       this.angularFireDatabase.list('CategoriesPlantes/'+CategoriePlante.type).push(CategoriePlante.categorie)
-//         .then(
-//           res => resolve(res),
-//           err => reject(err)
-//         )
-//     })
-//   }
-//   public getCategoriesPlantes(typePlante): Observable<Array<any>> {
-//     return new Observable<Array<PlanteModele>>(observer => {
-//     this.angularFireDatabase.list('CategoriesPlantes/'+typePlante).snapshotChanges(['child_added', 'child_removed', 'child_changed', 'child_moved']).subscribe(plantesRecus => {
-//       let categoriesPlantes: Array<any> = new Array<any>();
-//       plantesRecus.forEach(planteRecus => {
-//         let categoriePlante: any = null;
-//         categoriePlante = planteRecus.payload.val()
-//         categoriesPlantes.push(categoriePlante);
-//       })
-//       observer.next(categoriesPlantes);
-//     });
-//   });
-//   }
+  //   public createCategoriePlante(CategoriePlante: PlanteModele) {
+  //     return new Promise<any>((resolve, reject) => {
+  //       this.angularFireDatabase.list('CategoriesPlantes/'+CategoriePlante.type).push(CategoriePlante.categorie)
+  //         .then(
+  //           res => resolve(res),
+  //           err => reject(err)
+  //         )
+  //     })
+  //   }
+  //   public getCategoriesPlantes(typePlante): Observable<Array<any>> {
+  //     return new Observable<Array<PlanteModele>>(observer => {
+  //     this.angularFireDatabase.list('CategoriesPlantes/'+typePlante).snapshotChanges(['child_added', 'child_removed', 'child_changed', 'child_moved']).subscribe(plantesRecus => {
+  //       let categoriesPlantes: Array<any> = new Array<any>();
+  //       plantesRecus.forEach(planteRecus => {
+  //         let categoriePlante: any = null;
+  //         categoriePlante = planteRecus.payload.val()
+  //         categoriesPlantes.push(categoriePlante);
+  //       })
+  //       observer.next(categoriesPlantes);
+  //     });
+  //   });
+  //   }
 }
